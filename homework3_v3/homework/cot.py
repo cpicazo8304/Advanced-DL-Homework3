@@ -3,12 +3,41 @@ from .base_llm import BaseLLM
 
 class CoTModel(BaseLLM):
     def format_prompt(self, question: str) -> str:
-        """
-        Take a question and convert it into a chat template. The LLM will likely answer much
-        better if you provide a chat template. self.tokenizer.apply_chat_template can help here
-        """
+      messages = [
+          {
+              "role": "system",
+              "content": (
+                  "You are a precise unit conversion assistant.\n"
+                  "Solve step-by-step but keep reasoning minimal.\n"
+                  "ALWAYS output the final answer inside <answer></answer> tags.\n"
+                  "The answer must be a single number with no units."
+              ),
+          },
+          {
+              "role": "user",
+              "content": "Convert 10 meters to yards.",
+          },
+          {
+              "role": "assistant",
+              "content": (
+                  "1 meter = 1.09361 yards.\n"
+                  "10 × 1.09361 = 10.9361\n"
+                  "<answer>10.9361</answer>"
+              ),
+          },
+          {
+              "role": "user",
+              "content": question,
+          },
+      ]
 
-        raise NotImplementedError()
+      return self.tokenizer.apply_chat_template(
+          messages,
+          add_generation_prompt=True,
+          tokenize=False,
+      )
+
+        
 
 
 def load() -> CoTModel:
