@@ -13,7 +13,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
     for question, answer in data:
       prompt = [llm.format_prompt(question)]
       completions = llm.batched_generate(prompt,num_return_sequences=oversample, temperature=temperature)
-      print(completions)
+
       # go through each of the completions to see if the answer is correct (only need one)
       for completion in completions[0]:
         if llm.parse_answer(completion) == float(answer):
