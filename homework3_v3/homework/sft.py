@@ -12,6 +12,7 @@ def load() -> BaseLLM:
 
     llm = BaseLLM()
     llm.model = PeftModel.from_pretrained(llm.model, model_path).to(llm.device)
+    llm.format_prompt = lambda q: f"question: {q}"
     llm.model.eval()
 
     return llm
@@ -49,7 +50,10 @@ def format_example(prompt: str, answer: str) -> dict[str, str]:
     """
     Construct a question / answer pair. Consider rounding the answer to make it easier for the LLM.
     """
-    
+    return {
+        "question": f"question: {prompt}",
+        "answer": f"<answer>{round(float(answer), 2)}</answer>"
+    }
 
 
 class TokenizedDataset:
@@ -96,7 +100,7 @@ def train_model(
 
     training_args = TrainingArguments(
       gradient_checkpointing=True,
-      learning_rate=1e-4,
+      learning_rate=5e-4,
       output_dir=output_dir,
       logging_dir=output_dir,
       report_to="tensorboard",
@@ -118,7 +122,7 @@ def train_model(
     trainer.train()
     trainer.save_model("homework/sft_model")
 
-    test_model(output_dir)
+    test_model("homework/sft_model")
 
 
 def test_model(ckpt_path: str):
