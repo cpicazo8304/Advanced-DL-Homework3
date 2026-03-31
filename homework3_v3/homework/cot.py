@@ -26,9 +26,33 @@ class CoTModel(BaseLLM):
               ),
           },
           {
-              "role": "user",
-              "content": question,
+            "role": "user", 
+            "content": "How many pounds is 5 kg?"
           },
+          {
+            "role": "assistant", 
+            "content": (
+                  "1 kg = 2.20462 pounds.\n"
+                  "5 × 2.20462 = 11.0231"
+                  "\n<answer>11.0231</answer>"
+                )
+          },
+          {
+            "role": "user", 
+            "content": "Convert 3 hours to seconds."
+          },
+          {
+            "role": "assistant", 
+            "content": (
+                  "1 hour = 3600 seconds.\n"
+                  "3 × 3600 = 10800\n"
+                  "<answer>10800</answer>"
+                )
+          },
+          {
+            "role": "user", 
+            "content": question
+          }
       ]
 
       return self.tokenizer.apply_chat_template(
