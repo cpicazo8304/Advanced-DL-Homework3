@@ -51,6 +51,18 @@ class CoTModel(BaseLLM):
           },
           {
             "role": "user", 
+            "content": "Convert 3 years to days."
+          },
+          {
+            "role": "assistant", 
+            "content": (
+                  "1 year = 365 days.\n"
+                  "3 × 365 = 1095\n"
+                  "<answer>1095</answer>"
+                )
+          },
+          {
+            "role": "user", 
             "content": question
           }
       ]
