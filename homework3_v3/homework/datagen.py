@@ -3,7 +3,7 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
     from .cot import CoTModel
     from .data import Dataset
 
-  llm = CoTModel(checkpoint="HuggingFaceTB/SmolLM2-1.7B-Instruct")
+    llm = CoTModel(checkpoint="HuggingFaceTB/SmolLM2-1.7B-Instruct")
     data = Dataset("train")
     results = []
     question_counts = {}
